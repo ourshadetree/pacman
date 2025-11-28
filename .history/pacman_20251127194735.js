@@ -230,25 +230,9 @@ function move() {
         }
     }
     foods.delete(foodEaten);
-
-    //next level
-    if(foods.size == 0) {
-        loadMap();
-        resetPositions();
-    }
-    
 }
 
 function movePacman(e) {
-    if(gameOver) {
-        loadMap();
-        resetPositions();
-        lives = 3;
-        score = 0;
-        gameOver = false;
-        update();
-        return;
-    }
     if(e.code == "ArrowUp" || e.code == "KeyW") {
         pacman.updateDirection('U');
     }

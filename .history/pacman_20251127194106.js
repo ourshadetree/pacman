@@ -145,9 +145,6 @@ function loadMap() {
 }
 
 function update() {
-    if(gameOver) {
-        return;
-    }
     move();
     draw();
     //setInterval(update, 50), setTimeout, requestAnimationFrame(depends on computer, so no use)
@@ -196,14 +193,6 @@ function move() {
     }
 
     for(let ghost of ghosts.values()) {
-        if(collision(ghost, pacman)) {
-            lives -= 1;
-            if(lives == 0) {
-                gameOver = true;
-                return;
-            }
-            resetPositions();
-        }
 
         if(ghost.y == tileSize*9 && ghost.direction != 'U' && ghost.direction != 'D') {
             ghost.updateDirection('U');
@@ -230,25 +219,9 @@ function move() {
         }
     }
     foods.delete(foodEaten);
-
-    //next level
-    if(foods.size == 0) {
-        loadMap();
-        resetPositions();
-    }
-    
 }
 
 function movePacman(e) {
-    if(gameOver) {
-        loadMap();
-        resetPositions();
-        lives = 3;
-        score = 0;
-        gameOver = false;
-        update();
-        return;
-    }
     if(e.code == "ArrowUp" || e.code == "KeyW") {
         pacman.updateDirection('U');
     }
@@ -282,17 +255,6 @@ function collision(a, b) {
             a.x + a.width > b.x &&
             a.y < b.y + b.height &&
             a.y + a.height > b.y;
-}
-
-function resetPositions() {
-    pacman.reset();
-    pacman.velocityX = 0;
-    pacman.velocityY = 0;
-    for(let ghost of ghosts.values()) {
-        ghost.reset();
-        const newDirection = directions[Math.floor(Math.random()*4)];
-        ghost.updateDirection(newDirection);
-    }
 }
 
 class Block {
@@ -347,11 +309,6 @@ class Block {
             this.velocityX = tileSize/4;
             this.velocityY = 0;
         }
-    }
-
-    reset() {
-        this.x = this.startX;
-        this.y = this.startY;
     }
 }
 

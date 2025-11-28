@@ -145,9 +145,6 @@ function loadMap() {
 }
 
 function update() {
-    if(gameOver) {
-        return;
-    }
     move();
     draw();
     //setInterval(update, 50), setTimeout, requestAnimationFrame(depends on computer, so no use)
@@ -198,10 +195,6 @@ function move() {
     for(let ghost of ghosts.values()) {
         if(collision(ghost, pacman)) {
             lives -= 1;
-            if(lives == 0) {
-                gameOver = true;
-                return;
-            }
             resetPositions();
         }
 
@@ -230,25 +223,9 @@ function move() {
         }
     }
     foods.delete(foodEaten);
-
-    //next level
-    if(foods.size == 0) {
-        loadMap();
-        resetPositions();
-    }
-    
 }
 
 function movePacman(e) {
-    if(gameOver) {
-        loadMap();
-        resetPositions();
-        lives = 3;
-        score = 0;
-        gameOver = false;
-        update();
-        return;
-    }
     if(e.code == "ArrowUp" || e.code == "KeyW") {
         pacman.updateDirection('U');
     }
